@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>CRM Mstudio</title>
+<style>
+:root{--navy:#0f1f3d;--teal:#0e9f8a;--bg:#f4f6fa;--card:#fff;--txt:#17213a;--muted:#6b7590;--line:#e3e7ef;--acc:#1f5eff}
+*{box-sizing:border-box}html,body{margin:0;padding:0;background:var(--bg);color:var(--txt);font:14px/1.45 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+a{color:var(--acc)}button{font:inherit;cursor:pointer}
+#gate{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:50}
+#gate .box{background:#fff;border-radius:14px;padding:32px 28px;width:min(420px,92vw);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+#gate h1{margin:0 0 4px;font-size:22px;color:var(--navy)}#gate p{margin:0 0 18px;color:var(--muted)}
+#gate input{width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font-size:16px}
+#gate button{margin-top:12px;width:100%;padding:12px;border:0;border-radius:10px;background:var(--teal);color:#fff;font-weight:600}
+#gate .err{color:#c0392b;margin-top:10px;min-height:20px}
+header{background:var(--navy);color:#fff;padding:12px 18px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;position:sticky;top:0;z-index:20}
+header h1{font-size:18px;margin:0;letter-spacing:.2px}header h1 small{font-weight:400;opacity:.75;margin-left:8px;font-size:13px}
+header input{flex:1;min-width:220px;padding:9px 12px;border-radius:9px;border:0;font-size:15px}
+header .tabs button{background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;padding:7px 12px;border-radius:8px;margin-left:6px}
+header .tabs button.on{background:#fff;color:var(--navy);border-color:#fff}
+main{display:grid;grid-template-columns:270px 1fr;gap:0;min-height:calc(100vh - 58px)}
+aside{background:var(--card);border-right:1px solid var(--line);padding:14px 14px 40px;overflow:auto;max-height:calc(100vh - 58px);position:sticky;top:58px}
+aside h3{margin:14px 0 6px;font-size:12px;text-transform:uppercase;letter-spacing:.6px;color:var(--muted)}
+aside label{display:flex;align-items:center;gap:8px;padding:3px 2px;cursor:pointer;font-size:13px}
+aside label span.n{margin-left:auto;color:var(--muted);font-size:12px}
+aside .reset{width:100%;margin-top:8px;padding:8px;border:1px solid var(--line);background:#fff;border-radius:8px}
+section#liste{padding:14px 18px 60px;overflow:hidden}
+.bar{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+.bar .cnt{font-weight:600}.bar button{padding:7px 12px;border:1px solid var(--line);background:#fff;border-radius:8px}
+.bar select{padding:7px 10px;border:1px solid var(--line);border-radius:8px;background:#fff}
+.tw{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;min-width:900px}
+th,td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px}
+th{background:#f8f9fc;font-size:12px;text-transform:uppercase;letter-spacing:.4px;color:var(--muted);position:sticky;top:0;cursor:pointer}
+tbody tr{cursor:pointer}tbody tr:hover{background:#eef4ff}
+.tag{display:inline-block;padding:2px 8px;border-radius:999px;font-size:12px;background:#e9f7f4;color:#0a6b5d}
+.tag.src{background:#eef1f7;color:#3d4a6b;margin-right:3px}
+.more{display:block;margin:14px auto;padding:9px 16px;border:1px solid var(--line);background:#fff;border-radius:9px}
+#fiche{position:fixed;top:0;right:0;height:100vh;width:min(560px,100vw);background:#fff;box-shadow:-10px 0 40px rgba(0,0,0,.18);transform:translateX(105%);transition:transform .2s;z-index:30;overflow:auto;padding:22px 24px 50px}
+#fiche.on{transform:none}#fiche .x{position:absolute;top:12px;right:14px;border:0;background:#eee;border-radius:8px;padding:6px 10px}
+#fiche h2{margin:6px 0 2px;font-size:20px;color:var(--navy)}#fiche .sub{color:var(--muted);margin-bottom:14px}
+#fiche dl{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;margin:0}#fiche dt{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.4px;padding-top:3px}#fiche dd{margin:0;word-break:break-word}
+#fiche ul.tr{padding-left:18px;margin:6px 0}#fiche ul.tr li{margin:4px 0}
+#stats{padding:18px;display:none}#stats .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:16px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}.card h3{margin:0 0 10px;font-size:14px;color:var(--navy)}
+.row{display:grid;grid-template-columns:1fr 60px;gap:8px;align-items:center;margin:4px 0;font-size:13px}
+.row .b{height:8px;background:#e6ebf5;border-radius:4px;overflow:hidden}.row .b i{display:block;height:100%;background:var(--teal)}
+.row .l{display:flex;justify-content:space-between;gap:8px}.row .l b{font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}.kpi .card b{display:block;font-size:26px;color:var(--navy)}.kpi .card span{color:var(--muted);font-size:12px}
+footer{padding:14px 18px;color:var(--muted);font-size:12px}
+.ftog{display:none}
+@media(max-width:860px){main{grid-template-columns:1fr}aside{display:none;position:static;max-height:none;border-right:0;border-bottom:1px solid var(--line)}aside.open{display:block}aside .filt{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}#fiche dl{grid-template-columns:1fr}.ftog{display:inline-block}section#liste{padding:10px 10px 60px}}
+</style>
+</head>
+<body>
+<div id="gate"><form class="box" id="gform"><h1>CRM Mstudio</h1><p>Entre la phrase secrète pour ouvrir le fichier.</p><input id="pw" type="password" autocomplete="current-password" placeholder="Phrase secrète" autofocus><button type="submit">Ouvrir</button><div class="err" id="gerr"></div></form></div>
+<header><h1>CRM Mstudio <small id="hcnt"></small></h1><input id="q" placeholder="Rechercher un nom, une organisation, un e-mail, un poste…"><div class="tabs"><button class="on" data-t="liste">Contacts</button><button data-t="stats">Statistiques</button></div></header>
+<main>
+<aside><div class="filt"><div id="f-so"></div><div id="f-ty"></div><div id="f-se"></div><div id="f-lo"></div></div><button class="reset" id="reset">Réinitialiser les filtres</button></aside>
+<section id="liste"><div class="bar"><span class="cnt" id="cnt"></span><button class="ftog" id="ftog">Filtres</button><select id="tri"><option value="n">Trier : nom</option><option value="o">Trier : organisation</option><option value="dc">Trier : dernier contact</option><option value="er">Trier : e-mails reçus</option></select><button id="csv">Exporter la sélection (CSV)</button></div>
+<div class="tw"><table><thead><tr><th data-k="n">Nom</th><th data-k="o">Organisation</th><th data-k="p">Poste</th><th data-k="ty">Typologie</th><th data-k="se">Secteur</th><th data-k="lo">Localisation</th><th data-k="so">Sources</th><th data-k="dc">Dernier contact</th></tr></thead><tbody id="tb"></tbody></table></div>
+<button class="more" id="more">Afficher plus</button></section>
+<section id="stats"></section>
+</main>
+<div id="fiche"><button class="x" id="fx">Fermer</button><div id="fc"></div></div>
+<footer id="foot"></footer>
+<script>
+const ITER=250000;let DATA=null,ROWS=[],SHOWN=0,SORT='n',DIR=1;
+const F={so:new Set(),ty:new Set(),se:new Set(),lo:new Set()};
+const LAB={so:'Source',ty:'Typologie',se:'Secteur',lo:'Localisation'};
+function b64(s){const b=atob(s),a=new Uint8Array(b.length);for(let i=0;i<b.length;i++)a[i]=b.charCodeAt(i);return a}
+async function ouvrir(pw){const r=await fetch('data.enc?v='+Date.now());const raw=b64((await r.text()).trim());const sel=raw.slice(0,16),iv=raw.slice(16,28),ct=raw.slice(28);
+ const km=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+ const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:sel,iterations:ITER,hash:'SHA-256'},km,{name:'AES-GCM',length:256},false,['decrypt']);
+ const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv},key,ct);
+ const ds=new Blob([pt]).stream().pipeThrough(new DecompressionStream('gzip'));return JSON.parse(await new Response(ds).text())}
+document.getElementById('gform').onsubmit=async e=>{e.preventDefault();const b=e.target.querySelector('button');b.disabled=true;b.textContent='Ouverture…';
+ try{DATA=await ouvrir(document.getElementById('pw').value);try{sessionStorage.setItem('crm_pw',document.getElementById('pw').value)}catch(_){}
+ document.getElementById('gate').style.display='none';init()}catch(err){document.getElementById('gerr').textContent='Phrase incorrecte.';b.disabled=false;b.textContent='Ouvrir'}};
+(async()=>{let pw='';try{pw=sessionStorage.getItem('crm_pw')||''}catch(_){}if(pw){try{DATA=await ouvrir(pw);document.getElementById('gate').style.display='none';init()}catch(_){}}})();
+function norm(s){return (s||'').toString().normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase()}
+function init(){for(const c of DATA.contacts){c._q=norm([c.n,c.e,c.o,c.p,c.se,c.ty,c.lo,c.vi,c.no].join(' '));c._so=c.so?c.so.split(' ; '):[]}
+ document.getElementById('hcnt').textContent=DATA.contacts.length.toLocaleString('fr-FR')+' contacts';
+ document.getElementById('foot').textContent='Généré le '+(DATA.genere||'')+' · une ligne par adresse e-mail · localisation déduite, l’indice est dans la fiche · données chiffrées dans le navigateur.';
+ document.getElementById('q').oninput=()=>maj();document.getElementById('tri').onchange=e=>{SORT=e.target.value;DIR=SORT==='dc'||SORT==='er'?-1:1;maj()};
+ document.querySelectorAll('th').forEach(th=>th.onclick=()=>{const k=th.dataset.k;if(SORT===k)DIR=-DIR;else{SORT=k;DIR=1}maj()});
+ document.getElementById('reset').onclick=()=>{for(const k in F)F[k].clear();document.getElementById('q').value='';maj()};
+ document.getElementById('more').onclick=()=>{rendre(SHOWN+200)};document.getElementById('csv').onclick=csv;document.getElementById('ftog').onclick=()=>{const a=document.querySelector('aside');a.classList.toggle('open');document.getElementById('ftog').textContent=a.classList.contains('open')?'Masquer les filtres':'Filtres'};document.getElementById('fx').onclick=()=>document.getElementById('fiche').classList.remove('on');
+ document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tabs button').forEach(x=>x.classList.toggle('on',x===b));const t=b.dataset.t;document.getElementById('liste').style.display=t==='liste'?'':'none';document.querySelector('aside').style.display=t==='liste'?'':'none';document.getElementById('stats').style.display=t==='stats'?'block':'none';if(t==='stats')stats()});
+ maj()}
+function filtre(){const q=norm(document.getElementById('q').value).trim();const mots=q?q.split(/\s+/):[];
+ return DATA.contacts.filter(c=>(!mots.length||mots.every(m=>c._q.includes(m)))&&(!F.so.size||c._so.some(s=>F.so.has(s)))&&(!F.ty.size||F.ty.has(c.ty))&&(!F.se.size||F.se.has(c.se||'(indéterminé)'))&&(!F.lo.size||F.lo.has(c.lo)))}
+function maj(){ROWS=filtre();const k=SORT;ROWS.sort((a,b)=>{let x=a[k],y=b[k];if(k==='er'){x=+x||0;y=+y||0;return (x-y)*DIR}x=(x||'').toString();y=(y||'').toString();if(!x&&y)return 1;if(x&&!y)return -1;return x.localeCompare(y,'fr')*DIR});
+ document.getElementById('cnt').textContent=ROWS.length.toLocaleString('fr-FR')+' contact'+(ROWS.length>1?'s':'');facettes();rendre(200)}
+function facettes(){const base=filtre;for(const k of ['so','ty','se','lo']){const cnt=new Map();
+ const pool=DATA.contacts.filter(c=>{const q=norm(document.getElementById('q').value).trim();const mots=q?q.split(/\s+/):[];return (!mots.length||mots.every(m=>c._q.includes(m)))&&(k==='so'||!F.so.size||c._so.some(s=>F.so.has(s)))&&(k==='ty'||!F.ty.size||F.ty.has(c.ty))&&(k==='se'||!F.se.size||F.se.has(c.se||'(indéterminé)'))&&(k==='lo'||!F.lo.size||F.lo.has(c.lo))});
+ for(const c of pool){const vs=k==='so'?c._so:[k==='se'?(c.se||'(indéterminé)'):c[k]];for(const v of vs)cnt.set(v,(cnt.get(v)||0)+1)}
+ for(const v of F[k])if(!cnt.has(v))cnt.set(v,0);
+ const el=document.getElementById('f-'+k);const items=[...cnt.entries()].sort((a,b)=>b[1]-a[1]).slice(0,k==='lo'?18:40);
+ el.innerHTML='<h3>'+LAB[k]+'</h3>'+items.map(([v,n])=>'<label><input type="checkbox" '+(F[k].has(v)?'checked':'')+' data-k="'+k+'" data-v="'+esc(v)+'"><span>'+esc(v)+'</span><span class="n">'+n+'</span></label>').join('');
+ el.querySelectorAll('input').forEach(i=>i.onchange=()=>{const s=F[i.dataset.k];i.checked?s.add(i.dataset.v):s.delete(i.dataset.v);maj()})}}
+function esc(s){return (s||'').toString().replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/"/g,'&quot;')}
+function rendre(n){SHOWN=Math.min(n,ROWS.length);const tb=document.getElementById('tb');tb.innerHTML=ROWS.slice(0,SHOWN).map((c,i)=>'<tr data-i="'+i+'"><td title="'+esc(c.e)+'"><b>'+esc(c.n||c.e)+'</b>'+(c.n?'<br><span style="color:var(--muted);font-size:12px">'+esc(c.e)+'</span>':'')+'</td><td title="'+esc(c.o)+'">'+esc(c.o)+'</td><td title="'+esc(c.p)+'">'+esc(c.p)+'</td><td><span class="tag">'+esc(c.ty)+'</span></td><td>'+esc(c.se)+'</td><td>'+esc(c.lo)+'</td><td>'+c._so.map(s=>'<span class="tag src">'+esc(s)+'</span>').join('')+'</td><td>'+esc(c.dc)+'</td></tr>').join('');
+ tb.querySelectorAll('tr').forEach(tr=>tr.onclick=()=>fiche(ROWS[+tr.dataset.i]));document.getElementById('more').style.display=SHOWN<ROWS.length?'block':'none';document.getElementById('more').textContent='Afficher plus ('+SHOWN+' / '+ROWS.length+')'}
+function fiche(c){const d=[['E-mail','<a href="mailto:'+esc(c.e)+'">'+esc(c.e)+'</a>'],['Téléphone',esc(c.t)],['LinkedIn',c.li?'<a href="'+esc(c.li)+'" target="_blank" rel="noopener">'+esc(c.li)+'</a>':''],['Organisation',esc(c.o)],['Poste',esc(c.p)],['Typologie','<span class="tag">'+esc(c.ty)+'</span> <small style="color:var(--muted)">confiance '+esc(c.cf)+'</small>'],['Secteur',esc(c.se)],['Localisation',esc(c.lo)+(c.vi?' · '+esc(c.vi):'')+'<br><small style="color:var(--muted)">d’après : '+esc(c.lb)+'</small>'],['Sources',c._so.map(s=>'<span class="tag src">'+esc(s)+'</span>').join('')],['E-mails échangés',(c.er!==''||c.ee!=='')?(c.er||0)+' reçu(s), '+(c.ee||0)+' envoyé(s)':''],['Premier / dernier contact',esc(c.pc)+' → '+esc(c.dc)],['Note',esc(c.no)]].filter(x=>x[1]);
+ const traces=(c.tr||[]).map(t=>{const lab=t.s+' · '+t.t+(t.st?' ('+t.st+')':'');return '<li>'+(t.l?'<a href="'+esc(t.l)+'" target="_blank" rel="noopener">'+esc(lab)+'</a>':esc(lab))+'</li>'}).join('');
+ document.getElementById('fc').innerHTML='<h2>'+esc(c.n||c.e)+'</h2><div class="sub">'+esc([c.p,c.o].filter(Boolean).join(' · '))+'</div><dl>'+d.map(x=>'<dt>'+x[0]+'</dt><dd>'+x[1]+'</dd>').join('')+'</dl><h3 style="margin:16px 0 4px;font-size:13px;color:var(--muted);text-transform:uppercase">Traces</h3><ul class="tr">'+traces+'</ul>';
+ document.getElementById('fiche').classList.add('on')}
+function csv(){const cols=[['Nom','n'],['E-mail','e'],['Téléphone','t'],['LinkedIn','li'],['Organisation','o'],['Poste','p'],['Typologie','ty'],['Secteur','se'],['Localisation','lo'],["Localisation, d'après",'lb'],['Ville','vi'],['Sources','so'],['Détail des sources','ds'],['E-mails reçus','er'],['E-mails envoyés','ee'],['Premier contact','pc'],['Dernier contact','dc'],['Note','no']];
+ const q=v=>'"'+(v===undefined||v===null?'':v).toString().replace(/"/g,'""')+'"';const lignes=[cols.map(c=>q(c[0])).join(';')].concat(ROWS.map(r=>cols.map(c=>q(c[1]==='ds'?(r.tr||[]).map(t=>t.s+' · '+t.t+(t.st?' ('+t.st+')':'')).join(' ; '):r[c[1]])).join(';')));
+ const blob=new Blob(['﻿'+lignes.join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='crm-mstudio-selection.csv';a.click()}
+function stats(){const S=document.getElementById('stats');const C=DATA.contacts;const cnt=(f)=>{const m=new Map();for(const c of C){for(const v of f(c))m.set(v,(m.get(v)||0)+1)}return [...m.entries()].sort((a,b)=>b[1]-a[1])};
+ const bloc=(t,items,max)=>{const top=items.slice(0,max);const mx=top[0]?top[0][1]:1;return '<div class="card"><h3>'+t+'</h3>'+top.map(([v,n])=>'<div class="row"><div><div class="l"><b>'+esc(v)+'</b><span>'+n.toLocaleString('fr-FR')+'</span></div><div class="b"><i style="width:'+(100*n/mx)+'%"></i></div></div></div>').join('')+'</div>'};
+ const nbOrg=new Set(C.map(c=>norm(c.o)).filter(Boolean)).size;const src=cnt(c=>c._so);
+ S.innerHTML='<div class="kpi"><div class="card"><b>'+C.length.toLocaleString('fr-FR')+'</b><span>contacts</span></div><div class="card"><b>'+nbOrg.toLocaleString('fr-FR')+'</b><span>organisations distinctes</span></div>'+src.map(([s,n])=>'<div class="card"><b>'+n.toLocaleString('fr-FR')+'</b><span>via '+esc(s)+'</span></div>').join('')+'</div><div class="g">'+bloc('Typologie',cnt(c=>[c.ty]),20)+bloc('Secteur',cnt(c=>[c.se||'(indéterminé)']),30)+bloc('Localisation',cnt(c=>[c.lo]),15)+bloc('Organisations les plus représentées',cnt(c=>c.o?[c.o]:[]),30)+'</div>'}
+</script>
+</body>
+</html>
