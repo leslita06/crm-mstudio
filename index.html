@@ -160,7 +160,7 @@ function compte(k){const cnt=new Map();for(const c of pool(k)){const vs=k==='so'
 function facettes(){for(const k of ['ty','se','lo','so']){const items=compte(k).slice(0,k==='lo'?18:40);const el=document.getElementById('f-'+k);
  el.innerHTML='<h3>'+LAB[k]+'</h3>'+items.map(([v,n])=>'<label><input type="checkbox" '+(F[k].has(v)?'checked':'')+' data-k="'+k+'" data-v="'+esc(v)+'"><span>'+esc(v)+'</span><span class="n">'+n.toLocaleString('fr-FR')+'</span></label>').join('');
  el.querySelectorAll('input').forEach(i=>i.onchange=()=>{const s=F[i.dataset.k];i.checked?s.add(i.dataset.v):s.delete(i.dataset.v);maj()})}}
-function chips(){const el=document.getElementById('chips');const items=compte('ty').filter(x=>x[1]>0||F.ty.has(x[0]));
+function chips(){const el=document.getElementById('chips');const FIN=new Set(['Non renseigné','À qualifier']);const items=compte('ty').filter(x=>x[1]>0||F.ty.has(x[0])).sort((a,b)=>(FIN.has(a[0])-FIN.has(b[0]))||(b[1]-a[1]));
  el.innerHTML='<span class="lab">Type de contact</span>'+items.map(([v,n])=>'<button class="chip'+(F.ty.has(v)?' on':'')+'" data-v="'+esc(v)+'">'+esc(v)+' <b>'+n.toLocaleString('fr-FR')+'</b></button>').join('');
  el.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{const v=b.dataset.v;F.ty.has(v)?F.ty.delete(v):F.ty.add(v);maj()})}
 function ini(c){const t=(c.n||c.e||'').replace(/^[^\p{L}]+/u,'').trim();const m=t.split(/[\s.]+/).filter(Boolean);return m.length>1?(m[0][0]+m[m.length-1][0]).toUpperCase():t.slice(0,2).toUpperCase()}
